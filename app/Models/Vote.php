@@ -9,14 +9,21 @@ class Vote extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['post_id','user_id','choice'];
+    protected $fillable = ['post_id', 'user_id', 'choice'];
 
     protected $casts = [
         'post_id' => 'integer',
         'user_id' => 'integer',
-        'choice'  => 'integer', // 1 | 2
+        'choice'  => 'integer',
     ];
 
-    public function post(){ return $this->belongsTo(Post::class); }
-    public function user(){ return $this->belongsTo(User::class); }
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -10,7 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminAuthorSeeder::class,
-            DemoSeeder::class, // thêm dòng này nếu bạn muốn chạy demo dữ liệu mẫu luôn
+            DemoSeeder::class,
         ]);
     }
 }

@@ -2,6 +2,6 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Providers\AuthServiceProvider::class,             // ← THÊM
+    App\Providers\AuthServiceProvider::class,
     App\Providers\PermissionAliasServiceProvider::class,
 ];

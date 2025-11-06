@@ -11,16 +11,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    // Đăng ký providers “chuẩn” (đừng alias middleware ở đây)
     ->withProviders([
         App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,             // ← THÊM
-        App\Providers\PermissionAliasServiceProvider::class,  // alias Spatie (đặt tên riêng trong Provider)
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\PermissionAliasServiceProvider::class,
     ])
-    ->withMiddleware(function (Middleware $middleware): void {
-        // Không alias middleware Spatie ở đây để tránh đụng với Kernel/Provider khác
+    ->withMiddleware(function (Middleware $middleware) {
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-        //
+    ->withExceptions(function (Exceptions $exceptions) {
     })
     ->create();

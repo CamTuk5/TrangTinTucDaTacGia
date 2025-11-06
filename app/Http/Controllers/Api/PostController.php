@@ -10,16 +10,6 @@ use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
-    /**
-     * GET /api/posts
-     * Public list bài đã publish.
-     * Query params:
-     *  - q: tìm trong tiêu đề (optional)
-     *  - category_slug: lọc theo slug chuyên mục (optional)
-     *  - per_page: mặc định 10, tối đa 100
-     *  - sort: id|published_at|views|title (mặc định published_at)
-     *  - dir: asc|desc (mặc định desc)
-     */
     public function index(Request $request)
     {
         $perPage = (int) $request->integer('per_page', 10);
@@ -60,10 +50,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * GET /api/posts/{slug}
-     * Public show by slug + tăng views.
-     */
     public function showBySlug(string $slug)
     {
         $post = Post::with(['user:id,name', 'category:id,name,slug'])
@@ -71,7 +57,7 @@ class PostController extends Controller
             ->published()
             ->firstOrFail();
 
-        $post->increment('views'); // atomic
+        $post->increment('views');
 
         return response()->json([
             'message' => 'OK',
@@ -79,10 +65,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * POST /api/posts
-     * Yêu cầu đăng nhập (auth:sanctum). Mặc định tạo trạng thái draft.
-     */
     public function store(Request $request)
     {
         $request->headers->set('Accept', 'application/json');
@@ -115,10 +97,6 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * PUT /api/posts/{post}
-     * Yêu cầu đăng nhập + quyền update (policy).
-     */
     public function update(Request $request, Post $post)
     {
         $this->authorize('update', $post);
@@ -132,9 +110,7 @@ class PostController extends Controller
             'status'      => ['sometimes', 'in:draft,published'],
         ]);
 
-        // Nếu client cố set 'published' trực tiếp, ta chỉ cập nhật status; mốc publish_at sẽ do publish() xử lý
         if (isset($data['status']) && $data['status'] === 'published' && !$post->published_at) {
-            // Không tự ý set published_at ở đây để giữ đúng workflow publish/unpublish
             unset($data['status']);
         }
 
@@ -146,10 +122,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * DELETE /api/posts/{post}
-     * Yêu cầu đăng nhập + quyền delete (policy).
-     */
     public function destroy(Post $post)
     {
         $this->authorize('delete', $post);
@@ -169,9 +141,6 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * POST /api/posts/{post}/publish   (role:admin + policy publish)
-     */
     public function publish(Request $request, Post $post)
     {
         $this->authorize('publish', $post);
@@ -187,9 +156,6 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * POST /api/posts/{post}/unpublish (role:admin + policy publish)
-     */
     public function unpublish(Request $request, Post $post)
     {
         $this->authorize('publish', $post);

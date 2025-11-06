@@ -6,13 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        // Nơi đăng ký service container bindings
-    }
-
-    public function boot(): void
-    {
-        // Nơi chạy khi app khởi động
-    }
+    public function register(): void {}
+    public function boot(): void {}
 }

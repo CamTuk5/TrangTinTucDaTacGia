@@ -11,18 +11,10 @@ use Illuminate\Validation\Rule;
 
 class VoteController extends Controller
 {
-    /**
-     * POST /api/posts/{post}/votes  (auth:sanctum)
-     * Body: { choice: 1|2 }
-     * - Chỉ cho phép vote nếu post đã publish.
-     * - Nếu đã vote trước đó thì cập nhật lựa chọn (200).
-     * - Nếu lần đầu vote thì tạo mới (201).
-     */
     public function store(Request $request, Post $post)
     {
         $request->headers->set('Accept', 'application/json');
 
-        // chỉ cho phép vote bài đã publish
         if ($post->status !== 'published' || is_null($post->published_at)) {
             return response()->json(['message' => 'Post is not published'], 422);
         }
@@ -49,17 +41,12 @@ class VoteController extends Controller
                 'data'    => $vote,
             ], $status);
         } catch (QueryException $e) {
-            // phòng khi thiếu unique index hoặc lỗi DB khác
             return response()->json([
                 'message' => 'Cannot save vote',
             ], 422);
         }
     }
 
-    /**
-     * GET /api/posts/{post}/votes/summary (public)
-     * Trả tổng hợp theo choice 1|2 và tổng.
-     */
     public function summary(Post $post)
     {
         $counts = $post->votes()

@@ -9,14 +9,14 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
             $table->longText('content');
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->enum('status', ['draft', 'published'])->default('draft');
-            $table->timestamp('published_at')->nullable();
-            $table->unsignedBigInteger('views')->default(0);
+            $table->string('status')->default('draft')->index();
+            $table->timestamp('published_at')->nullable()->index();
+            $table->unsignedInteger('views')->default(0);
             $table->timestamps();
         });
     }

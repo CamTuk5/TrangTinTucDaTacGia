@@ -3,23 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Spatie\Permission\Middlewares\RoleMiddleware;
-use Spatie\Permission\Middlewares\PermissionMiddleware;
-use Spatie\Permission\Middlewares\RoleOrPermissionMiddleware;
+use Illuminate\Contracts\Routing\Registrar;
 
 class PermissionAliasServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        //
-    }
+    public function register(): void {}
 
-    public function boot(): void
+    public function boot(Registrar $router): void
     {
-        // Đăng ký alias middleware thủ công để dùng ngắn gọn trong routes
-        $router = app('router');
-        $router->aliasMiddleware('role', RoleMiddleware::class);
-        $router->aliasMiddleware('permission', PermissionMiddleware::class);
-        $router->aliasMiddleware('role_or_permission', RoleOrPermissionMiddleware::class);
+        $router->aliasMiddleware('role', \App\Http\Middleware\RoleMiddleware::class);
     }
 }
