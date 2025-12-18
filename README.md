@@ -22,6 +22,8 @@ Bước 2: Cài đặt các thư viện cần thiết
 - composer install
 - npm install
 Bước 3: Cấu hình môi trường
+- Chạy lệnh copy .env.example .env
+- Chạy lệnh php artisan key:generate
 - Tạo cơ sở dữ liệu MySQL có tên: tintucued.
 Bước 4: Khởi tạo dữ liệu
 - php artisan migrate
